@@ -244,14 +244,14 @@ function togglePass() {
 }
 
 function login() {
-    const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim();
 
-    if (!email) {
+    if (email === "") {
         alert("Enter your email");
         return;
     }
 
-    window.location.href = "home.html";
+    window.location.assign("./home.html");
 }
 
 </script>
