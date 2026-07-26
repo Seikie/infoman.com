@@ -2,257 +2,250 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title> infoman.com</title>
 
 <style>
-
-/* ===== RESET ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-/* ===== BODY ===== */
 body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #0b0b0f;
-    overflow: hidden;
+    font-family: Arial;
+    margin:0;
+    color:white;
+
+    /* GRADIENT BACKGROUND */
+   background: linear-gradient(
+    to bottom,
+    #000000 0%,
+    #1a0a00 40%,
+    #ff6a00 100%
+);
+
+    min-height:100vh;
+}45x
+
+header {
+    text-align:center;
+    padding:20px;
+    background:#000000;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* ===== BLOBS ===== */
-body::before, body::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    z-index: 0;
-}
-
-body::before {
-    width: 450px;
-    height: 450px;
-    background: linear-gradient(45deg, #ff512f, #dd2476);
-    bottom: -120px;
-    right: -120px;
-}
-
-body::after {
-    width: 450px;
-    height: 450px;
-    background: linear-gradient(45deg, #7f00ff, #e100ff);
-    top: -120px;
-    left: -120px;
-}
-
-/* ===== CARD ===== */
-.container {
-    position: relative;
-    z-index: 2;
-    width: 360px;
-    padding: 35px;
-    border-radius: 25px;
-
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255,255,255,0.2);
-
-    box-shadow: 0 0 50px rgba(0,0,0,0.6);
-}
-
-/* ===== TEXT ===== */
-.container h1 {
-    color: #fff;
-    font-weight: 600;
-}
-
-.container p {
-    color: #bbb;
-    font-size: 12px;
-    margin-bottom: 25px;
-}
-
-/* ===== INPUT ===== */
-.input-box {
-    position: relative;
-    margin-bottom: 18px;
-}
-
-.input-box input {
-    width: 100%;
-    padding: 12px 40px 12px 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.3);
-    background: transparent;
-    color: #fff;
-    outline: none;
-}
-
-.input-box span {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #ccc;
-    cursor: pointer;
-}
-
-/* ===== REMEMBER ===== */
-.remember {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #ccc;
-    margin-bottom: 20px;
-}
-
-/* ===== BUTTON ===== */
+/* GLOW BUTTON BASE */
 button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(90deg, #ff512f, #ff7b00);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+    width:100%;
+    padding:10px;
+    background:#ff4c4c;
+    border:none;
+    color:white;
+    cursor:pointer;
+    margin-top:5px;
+
+    transition: all 0.25s ease;
+    box-shadow: 0 0 8px rgba(255, 76, 76, 0.3);
 }
 
+/* HOVER EFFECT */
 button:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 20px #ff512f;
+    box-shadow: 0 0 18px rgba(255, 76, 76, 0.9);
 }
 
-/* ===== LINKS ===== */
-.links {
-    text-align: center;
-    margin-top: 15px;
+/* CLICK EFFECT */
+button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 5px rgba(255, 76, 76, 0.5);
 }
 
-.links a {
-    color: #ccc;
-    font-size: 12px;
-    text-decoration: none;
-    position: relative;
-    transition: 0.3s;
+.cart-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: auto;
+    padding: 6px 12px;
+    z-index: 1002;
 }
 
-/* ===== SIGNUP HOVER ANIMATION ===== */
-.signup {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 12px;
-    color: #bbb;
+.grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+    gap:20px;
+    padding:20px;
 }
 
-.signup a {
-    color: white;
-    text-decoration: none;
-    position: relative;
-    transition: 0.3s;
+.beat {
+    background: #000000;
+    padding:15px;
+    border-radius:10px;
+
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* underline animation */
-.signup a::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    left: 0;
-    bottom: -3px;
-    background: linear-gradient(90deg, #ff512f, #ff7b00);
-    transition: 0.3s;
+audio {
+    width:100%;
 }
 
-.signup a:hover::after {
-    width: 100%;
+.cart {
+    position: fixed;
+    top: 55px;
+    right: 15px;
+    width: 300px;
+    background: #1c1c1c;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1001;
 }
 
-/* glow + lift */
-.signup a:hover {
-    color: #ff7b00;
-    transform: translateY(-2px);
+.cart.active {
+    display: block;
 }
 
-/* ===== DOT ===== */
-.dot {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, #ff7b00, transparent);
-    border-radius: 50%;
-    bottom: 60px;
-    left: 60px;
-    filter: blur(10px);
+/* GREEN GLOW FOR CHECKOUT */
+.checkout-btn {
+    background: green;
+    box-shadow: 0 0 10px rgba(0,255,0,0.4);
 }
 
+.checkout-btn:hover {
+    box-shadow: 0 0 18px rgba(0,255,0,0.9);
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>Login</h1>
-    <p>WELCOME BACK PLEASE LOGIN TO YOUR ACCOUNT</p>
+<header>
+    <CENTER>
+<h1> INFOMAN MUSICS </h1>
+      </CENTER>
+</header>
 
-    <!-- EMAIL -->
-    <div class="input-box">
-        <input type="email" id="email" placeholder="Email Address">
-        <span></span>
-    </div>
+<button class="cart-btn" onclick="toggleCart()">🛒</button>
 
-    <!-- PASSWORD -->
-    <div class="input-box">
-        <input type="password" id="password" placeholder="Password">
-        <span onclick="togglePass()">👁</span>
-    </div>
+<div class="cart">
+<button onclick="toggleCart()" style="background:red;">Close</button>
 
-    <!-- REMEMBER -->
-    <div class="remember">
-        <input type="checkbox"> Remember Me
-    </div>
+<h3>🛒 Cart</h3>
+<ul id="cartList"></ul>
+<p>Total: ₱<span id="total">0</span></p>
 
-    <!-- BUTTON -->
-    <button onclick="login()">LOGIN</button>
-
-    <div class="links">
-        <a href="#">Forgot Password</a>
-    </div>
-
-    <!-- SIGNUP LINK -->
-    <div class="signup">
-        Don’t have an account? <a href="sign up.html">Signup</a>
-    </div>
+<button class="checkout-btn" onclick="goCheckout()">Checkout</button>
 </div>
 
-<div class="dot"></div>
+<div class="grid" id="grid"></div>
 
 <script>
 
-function togglePass() {
-    const pass = document.getElementById("password");
-    pass.type = pass.type === "password" ? "text" : "password";
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* LOAD PRODUCTS */
+function loadBeats() {
+
+    let beats = JSON.parse(localStorage.getItem("beats"));
+
+    if (!beats || beats.length === 0) {
+        beats = [
+            { title: "Trap Beat 1", price: 1500, audio: "beat1.mp3" },
+            { title: "Trap Beat 2", price: 1500, audio: "beat2.mp3" },
+            { title: "Drill Beat", price: 1500, audio: "beat3.mp3" }
+        ];
+        localStorage.setItem("beats", JSON.stringify(beats));
+    }
+
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+
+    beats.forEach((beat, index) => {
+
+        let div = document.createElement("div");
+        div.className = "beat";
+
+        div.innerHTML = `
+            <h3>${beat.title}</h3>
+            <audio controls src="${beat.audio}"></audio>
+            <p>₱${beat.price}</p>
+            <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+
+        grid.appendChild(div);
+    });
 }
 
-function login() {
-    const email = document.getElementById("email").value;
 
-    if (!email) {
-        alert("Enter your email");
+function addToCart(index) {
+    let beats = JSON.parse(localStorage.getItem("beats"));
+
+    let rawPrice = beats[index].price;
+
+    
+    let cleanPrice = Number(String(rawPrice).replace(/[^0-9.]/g, ""));
+
+    let item = {
+        title: beats[index].title,
+        price: cleanPrice
+    };
+
+    cart.push(item);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    updateCart();
+}
+
+/* REMOVE ITEM */
+function removeItem(i) {
+    cart.splice(i, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCart();
+}
+
+/* BULLETPROOF TOTAL */
+function updateCart() {
+
+    let list = document.getElementById("cartList");
+    let total = 0;
+
+    list.innerHTML = "";
+
+    cart.forEach((item, i) => {
+
+        let price = Number(item.price);
+
+        if (isNaN(price)) price = 0;
+
+        total += price;
+
+        let li = document.createElement("li");
+        li.innerHTML = `
+            ${item.title} - ₱${price}
+            <button onclick="removeItem(${i})" style="width:auto;background:red;">X</button>
+        `;
+
+        list.appendChild(li);
+    });
+
+    document.getElementById("total").innerText = total;
+
+    localStorage.setItem("total", total);
+}
+
+/* TOGGLE CART */
+function toggleCart() {
+    document.querySelector(".cart").classList.toggle("active");
+}
+
+/* CHECKOUT */
+function goCheckout() {
+
+    if (cart.length === 0) {
+        alert("Cart is empty!");
         return;
     }
 
-    window.location.href = "home.html";
+    window.location.href = "./checkout.html";
 }
+
+/* INIT */
+loadBeats();
+updateCart();
 
 </script>
 
