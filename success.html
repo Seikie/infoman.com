@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment Success</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+
+    background: linear-gradient(to bottom, #000000, #ff5a00);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* container */
+.success-container {
+    text-align: center;
+}
+
+/* title */
+.success-container h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+/* glowing button */
+.back-btn {
+    display: inline-block;
+    padding: 12px 28px;
+
+    background: #111;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px limegreen;
+    animation: glowPulse 1.8s infinite;
+    transition: 0.3s ease;
+}
+
+/* glow animation */
+@keyframes glowPulse {
+    0%   { box-shadow: 0 0 10px limegreen; }
+    50%  { box-shadow: 0 0 30px limegreen; }
+    100% { box-shadow: 0 0 10px limegreen; }
+}
+
+/* hover */
+.back-btn:hover {
+    transform: scale(1.05);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="success-container">
+    <h1>Payment Successful 🎉</h1>
+    <a href="index.html" class="back-btn">Back to Store</a>
+</div>
+
+</body>
+</html>

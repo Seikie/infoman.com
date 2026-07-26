@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title> infoman.com</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin:0;
+    color:white;
+
+    /* GRADIENT BACKGROUND */
+   background: linear-gradient(
+    to bottom,
+    #000000 0%,
+    #1a0a00 40%,
+    #ff6a00 100%
+);
+
+    min-height:100vh;
+}45x
+
+header {
+    text-align:center;
+    padding:20px;
+    background:#000000;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* GLOW BUTTON BASE */
+button {
+    width:100%;
+    padding:10px;
+    background:#ff4c4c;
+    border:none;
+    color:white;
+    cursor:pointer;
+    margin-top:5px;
+
+    transition: all 0.25s ease;
+    box-shadow: 0 0 8px rgba(255, 76, 76, 0.3);
+}
+
+/* HOVER EFFECT */
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 18px rgba(255, 76, 76, 0.9);
+}
+
+/* CLICK EFFECT */
+button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 5px rgba(255, 76, 76, 0.5);
+}
+
+.cart-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: auto;
+    padding: 6px 12px;
+    z-index: 1002;
+}
+
+.grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.beat {
+    background: #000000;
+    padding:15px;
+    border-radius:10px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+audio {
+    width:100%;
+}
+
+.cart {
+    position: fixed;
+    top: 55px;
+    right: 15px;
+    width: 300px;
+    background: #1c1c1c;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1001;
+}
+
+.cart.active {
+    display: block;
+}
+
+/* GREEN GLOW FOR CHECKOUT */
+.checkout-btn {
+    background: green;
+    box-shadow: 0 0 10px rgba(0,255,0,0.4);
+}
+
+.checkout-btn:hover {
+    box-shadow: 0 0 18px rgba(0,255,0,0.9);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <CENTER>
+<h1> INFOMAN MUSICS </h1>
+</CENTER>
+</header>
+
+<button class="cart-btn" onclick="toggleCart()">🛒</button>
+
+<div class="cart">
+<button onclick="toggleCart()" style="background:red;">Close</button>
+
+<h3>🛒 Cart</h3>
+<ul id="cartList"></ul>
+<p>Total: ₱<span id="total">0</span></p>
+
+<button class="checkout-btn" onclick="goCheckout()">Checkout</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* LOAD PRODUCTS */
+function loadBeats() {
+
+    let beats = JSON.parse(localStorage.getItem("beats"));
+
+    if (!beats || beats.length === 0) {
+        beats = [
+            { title: "Trap Beat 1", price: 1500, audio: "beat1.mp3" },
+            { title: "Trap Beat 2", price: 1500, audio: "beat2.mp3" },
+            { title: "Drill Beat", price: 1500, audio: "beat3.mp3" }
+        ];
+        localStorage.setItem("beats", JSON.stringify(beats));
+    }
+
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+
+    beats.forEach((beat, index) => {
+
+        let div = document.createElement("div");
+        div.className = "beat";
+
+        div.innerHTML = `
+            <h3>${beat.title}</h3>
+            <audio controls src="${beat.audio}"></audio>
+            <p>₱${beat.price}</p>
+            <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+
+        grid.appendChild(div);
+    });
+}
+
+
+function addToCart(index) {
+    let beats = JSON.parse(localStorage.getItem("beats"));
+
+    let rawPrice = beats[index].price;
+
+    
+    let cleanPrice = Number(String(rawPrice).replace(/[^0-9.]/g, ""));
+
+    let item = {
+        title: beats[index].title,
+        price: cleanPrice
+    };
+
+    cart.push(item);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    updateCart();
+}
+
+/* REMOVE ITEM */
+function removeItem(i) {
+    cart.splice(i, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCart();
+}
+
+/* BULLETPROOF TOTAL */
+function updateCart() {
+
+    let list = document.getElementById("cartList");
+    let total = 0;
+
+    list.innerHTML = "";
+
+    cart.forEach((item, i) => {
+
+        let price = Number(item.price);
+
+        if (isNaN(price)) price = 0;
+
+        total += price;
+
+        let li = document.createElement("li");
+        li.innerHTML = `
+            ${item.title} - ₱${price}
+            <button onclick="removeItem(${i})" style="width:auto;background:red;">X</button>
+        `;
+
+        list.appendChild(li);
+    });
+
+    document.getElementById("total").innerText = total;
+
+    localStorage.setItem("total", total);
+}
+
+/* TOGGLE CART */
+function toggleCart() {
+    document.querySelector(".cart").classList.toggle("active");
+}
+
+/* CHECKOUT */
+function goCheckout() {
+
+    if (cart.length === 0) {
+        alert("Cart is empty!");
+        return;
+    }
+
+    window.location.href = "./checkout.html";
+}
+
+/* INIT */
+loadBeats();
+updateCart();
+
+</script>
+
+</body>
+</html>

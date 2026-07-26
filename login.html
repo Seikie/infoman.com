@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== BODY ===== */
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0b0b0f;
+    overflow: hidden;
+}
+
+/* ===== BLOBS ===== */
+body::before, body::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0;
+}
+
+body::before {
+    width: 450px;
+    height: 450px;
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+    bottom: -120px;
+    right: -120px;
+}
+
+body::after {
+    width: 450px;
+    height: 450px;
+    background: linear-gradient(45deg, #7f00ff, #e100ff);
+    top: -120px;
+    left: -120px;
+}
+
+/* ===== CARD ===== */
+.container {
+    position: relative;
+    z-index: 2;
+    width: 360px;
+    padding: 35px;
+    border-radius: 25px;
+
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.2);
+
+    box-shadow: 0 0 50px rgba(0,0,0,0.6);
+}
+
+/* ===== TEXT ===== */
+.container h1 {
+    color: #fff;
+    font-weight: 600;
+}
+
+.container p {
+    color: #bbb;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+/* ===== INPUT ===== */
+.input-box {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: #fff;
+    outline: none;
+}
+
+.input-box span {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+    cursor: pointer;
+}
+
+/* ===== REMEMBER ===== */
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+/* ===== BUTTON ===== */
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, #ff512f, #ff7b00);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #ff512f;
+}
+
+/* ===== LINKS ===== */
+.links {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.links a {
+    color: #ccc;
+    font-size: 12px;
+    text-decoration: none;
+    position: relative;
+    transition: 0.3s;
+}
+
+/* ===== SIGNUP HOVER ANIMATION ===== */
+.signup {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #bbb;
+}
+
+.signup a {
+    color: white;
+    text-decoration: none;
+    position: relative;
+    transition: 0.3s;
+}
+
+/* underline animation */
+.signup a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -3px;
+    background: linear-gradient(90deg, #ff512f, #ff7b00);
+    transition: 0.3s;
+}
+
+.signup a:hover::after {
+    width: 100%;
+}
+
+/* glow + lift */
+.signup a:hover {
+    color: #ff7b00;
+    transform: translateY(-2px);
+}
+
+/* ===== DOT ===== */
+.dot {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #ff7b00, transparent);
+    border-radius: 50%;
+    bottom: 60px;
+    left: 60px;
+    filter: blur(10px);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Login</h1>
+    <p>WELCOME BACK PLEASE LOGIN TO YOUR ACCOUNT</p>
+
+    <!-- EMAIL -->
+    <div class="input-box">
+        <input type="email" id="email" placeholder="Email Address">
+        <span></span>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="input-box">
+        <input type="password" id="password" placeholder="Password">
+        <span onclick="togglePass()">👁</span>
+    </div>
+
+    <!-- REMEMBER -->
+    <div class="remember">
+        <input type="checkbox"> Remember Me
+    </div>
+
+    <!-- BUTTON -->
+    <button onclick="login()">LOGIN</button>
+
+    <div class="links">
+        <a href="#">Forgot Password</a>
+    </div>
+
+    <!-- SIGNUP LINK -->
+    <div class="signup">
+        Don’t have an account? <a href="sign up.html">Signup</a>
+    </div>
+</div>
+
+<div class="dot"></div>
+
+<script>
+
+function togglePass() {
+    const pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+
+function login() {
+    const email = document.getElementById("email").value;
+
+    if (!email) {
+        alert("Enter your email");
+        return;
+    }
+
+    window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

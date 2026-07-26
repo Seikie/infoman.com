@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>infoman admin.com</title>
+
+<style>
+
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+
+    background: linear-gradient(to bottom, #000000, #ff5a00);
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* ===== TITLE ===== */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* ===== PANEL ===== */
+.panel {
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+
+    /* CLEAN GLOW */
+    box-shadow: 0 0 25px rgba(255, 90, 0, 0.4);
+
+    margin-bottom: 30px;
+}
+
+/* ===== DRAG & DROP ===== */
+.drop-area {
+    border: 2px dashed #ff5a00;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+
+    background: rgba(0,0,0,0.6);
+    transition: 0.3s;
+}
+
+.drop-area:hover {
+    box-shadow: 0 0 15px rgba(255,90,0,0.5);
+}
+
+.drop-area.dragover {
+    background: #222;
+    border-color: #fff;
+}
+
+/* ===== INPUTS ===== */
+input {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+
+    background: #1a1a1a;
+    color: white;
+
+    margin: 10px 5px;
+}
+
+/* ===== BUTTON ===== */
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+
+    background: #ff4c4c;
+    color: white;
+    cursor: pointer;
+
+    box-shadow: 0 0 10px #ff4c4c;
+    transition: 0.3s;
+}
+
+button:hover {
+    box-shadow: 0 0 20px #ff4c4c;
+}
+
+/* ===== GRID ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* ===== BEAT CARD ===== */
+.beat {
+    background: linear-gradient(145deg, #111, #1c1c1c);
+    padding: 15px;
+    border-radius: 12px;
+
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    transition: 0.3s;
+}
+
+.beat:hover {
+    box-shadow: 0 0 20px rgba(255, 90, 0, 0.4);
+}
+
+/* ===== AUDIO ===== */
+audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>INFOMAN ADMIN PANEL</h1>
+
+<div class="panel">
+
+    <!-- DRAG AREA -->
+    <div id="dropArea" class="drop-area">
+        <p>Drag & Drop your beats here</p>
+        <p>or click to select files</p>
+        <input type="file" id="fileInput" accept="audio/*" multiple hidden>
+    </div>
+
+    <!-- INPUTS -->
+    <div style="margin-top:15px;">
+        <input type="text" id="title" placeholder="Beat Title">
+        <input type="number" id="price" placeholder="Price">
+        <button onclick="uploadBeat()">Upload Beat(s)</button>
+    </div>
+
+</div>
+
+<h2>📂 Uploaded Beats</h2>
+<div id="grid" class="grid"></div>
+
+</div>
+
+<script>
+
+/* ===== ELEMENTS ===== */
+const dropArea = document.getElementById("dropArea");
+const fileInput = document.getElementById("fileInput");
+
+/* ===== STATE ===== */
+let selectedFiles = [];
+
+/* ===== CLICK SELECT ===== */
+dropArea.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", () => {
+    selectedFiles = Array.from(fileInput.files);
+    updateUI();
+});
+
+/* ===== DRAG & DROP ===== */
+dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropArea.classList.add("dragover");
+});
+
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("dragover");
+});
+
+dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropArea.classList.remove("dragover");
+
+    selectedFiles = Array.from(e.dataTransfer.files);
+    updateUI();
+});
+
+/* ===== UI UPDATE ===== */
+function updateUI() {
+    dropArea.innerHTML = `
+        <p>${selectedFiles.length} file(s) selected</p>
+        <p>Click upload</p>
+        <input type="file" id="fileInput" accept="audio/*" multiple hidden>
+    `;
+
+    // Re-bind input after replacing HTML
+    const newInput = document.getElementById("fileInput");
+    newInput.addEventListener("change", () => {
+        selectedFiles = Array.from(newInput.files);
+        updateUI();
+    });
+}
+
+/* ===== UPLOAD ===== */
+function uploadBeat() {
+    const title = document.getElementById("title").value;
+    const price = document.getElementById("price").value;
+
+    if (!selectedFiles.length || !title || !price) {
+        alert("Complete all fields!");
+        return;
+    }
+
+    let beats = JSON.parse(localStorage.getItem("beats")) || [];
+    let processed = 0;
+
+    selectedFiles.forEach(file => {
+
+        // 🔥 FILE SIZE LIMIT (1.5MB)
+        if (file.size > 30.4 * 1024 * 1024) {
+            alert(file.name + " is too large! Max 2000MB only.");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            beats.push({
+                title: title,
+                price: price,
+                audio: e.target.result
+            });
+
+            processed++;
+
+            if (processed === selectedFiles.length) {
+                try {
+                    localStorage.setItem("beats", JSON.stringify(beats));
+                } catch (err) {
+                    alert("Storage full! Delete some beats.");
+                    return;
+                }
+
+                loadBeats();
+                alert("Upload complete!");
+
+                resetForm();
+            }
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+
+/* ===== RESET ===== */
+function resetForm() {
+    selectedFiles = [];
+    fileInput.value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("price").value = "";
+
+    dropArea.innerHTML = `
+        <p>Drag & Drop your beats here</p>
+        <p>or click to select files</p>
+        <input type="file" id="fileInput" accept="audio/*" multiple hidden>
+    `;
+
+    // Rebind again
+    const newInput = document.getElementById("fileInput");
+    newInput.addEventListener("change", () => {
+        selectedFiles = Array.from(newInput.files);
+        updateUI();
+    });
+}
+
+/* ===== LOAD ===== */
+function loadBeats() {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+
+    let beats = JSON.parse(localStorage.getItem("beats")) || [];
+
+    beats.forEach((beat, index) => {
+        const div = document.createElement("div");
+        div.className = "beat";
+
+        div.innerHTML = `
+            <h3>${beat.title}</h3>
+            <audio controls src="${beat.audio}"></audio>
+            <p>₱${beat.price}</p>
+            <button onclick="deleteBeat(${index})">Delete</button>
+        `;
+
+        grid.appendChild(div);
+    });
+}
+
+/* ===== DELETE ===== */
+function deleteBeat(index) {
+    let beats = JSON.parse(localStorage.getItem("beats")) || [];
+    beats.splice(index, 1);
+    localStorage.setItem("beats", JSON.stringify(beats));
+    loadBeats();
+}
+
+/* ===== INIT ===== */
+loadBeats();
+
+</script>
+
+</body>
+</html>

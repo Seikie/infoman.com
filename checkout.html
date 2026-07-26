@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Checkout</title>
+
+<style>
+
+/* BACKGROUND */
+body {
+    font-family: Arial;
+    background: radial-gradient(circle at top, #0f0f0f, #000);
+    color: white;
+    padding: 20px;
+}
+
+/* MAIN CONTAINER */
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: linear-gradient(145deg, #111, #1a1a1a);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0,255,0,0.15);
+}
+
+/* METHODS */
+.method {
+    background: linear-gradient(145deg, #1a1a1a, #222);
+    padding: 12px;
+    margin: 12px 0;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid #333;
+    transition: 0.3s;
+}
+
+.method img {
+    width: 35px;
+    filter: drop-shadow(0 0 3px limegreen);
+}
+
+.method:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 12px rgba(0,255,0,0.4);
+}
+
+.method.active {
+    border: 1px solid limegreen;
+    box-shadow: 0 0 15px limegreen;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: linear-gradient(90deg, limegreen, green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    box-shadow: 0 0 15px limegreen;
+    transform: scale(1.03);
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #111, #1c1c1c);
+    padding: 25px;
+    border-radius: 14px;
+
+    width: 95%;
+    max-width: 480px;
+
+    box-shadow: 0 0 30px limegreen;
+
+    overflow: visible
+}
+
+.modal input {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0;
+    border: none;
+    border-radius: 6px;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Checkout</h2>
+<h3>Total: ₱<span id="total"></span></h3>
+
+<!-- METHODS -->
+<div class="method" onclick="selectMethod(event, 'card')">
+<img src="https://img.icons8.com/color/48/bank-card-back-side.png">
+Card
+</div>
+
+<div class="method" onclick="selectMethod(event, 'paypal')">
+<img src="https://img.icons8.com/color/48/paypal.png">
+PayPal
+</div>
+
+<div class="method" onclick="selectMethod(event, 'gcash')">
+<img src="gcash.png">
+GCash
+</div>
+
+<div class="method" onclick="selectMethod(event, 'maya')">
+<img src="paymaya.png">
+PayMaya
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+
+    <span class="close" onclick="closeModal()">✖</span>
+
+    <h3 id="modalTitle"></h3>
+
+    <div id="modalFields"></div>
+
+    <button onclick="confirmPayment()">Confirm Payment</button>
+
+  </div>
+</div>
+
+<script>
+
+let selectedMethod = null;
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let total = localStorage.getItem("total") || 0;
+
+document.getElementById("total").innerText = total;
+
+/* SELECT METHOD */
+function selectMethod(event, method) {
+
+    document.querySelectorAll(".method").forEach(m => {
+        m.classList.remove("active");
+    });
+
+    event.currentTarget.classList.add("active");
+
+    selectedMethod = method;
+
+    openModal(method);
+}
+
+/* OPEN MODAL */
+function openModal(method) {
+
+    const modal = document.getElementById("modal");
+    const fields = document.getElementById("modalFields");
+    const title = document.getElementById("modalTitle");
+
+    fields.innerHTML = "";
+    title.innerText = method.toUpperCase() + " Details";
+
+    if (method === "card") {
+        fields.innerHTML = `
+            <input placeholder="Card Number">
+            <input placeholder="Name">
+            <input placeholder="Expiry">
+            <input placeholder="CVV">
+        `;
+    }
+
+    if (method === "paypal") {
+        fields.innerHTML = `<input placeholder="PayPal Email">`;
+    }
+
+    if (method === "gcash") {
+        fields.innerHTML = `<input placeholder="GCash Number">`;
+    }
+
+    if (method === "maya") {
+        fields.innerHTML = `<input placeholder="PayMaya Number">`;
+    }
+
+    modal.style.display = "flex";
+}
+
+/* CLOSE */
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+/* CONFIRM PAYMENT */
+function confirmPayment() {
+
+    let inputs = document.querySelectorAll("#modalFields input");
+
+    let values = [];
+    let empty = false;
+
+    inputs.forEach(i => {
+        if (!i.value.trim()) empty = true;
+        values.push(i.value.trim());
+    });
+
+    if (empty) {
+        alert("Please complete all fields!");
+        return;
+    }
+
+    let order = {
+        id: Date.now(),
+        items: cart,
+        total: Number(total),
+        method: selectedMethod.toUpperCase(),
+        details: values.join(" | "),
+        date: new Date().toLocaleString()
+    };
+
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(order);
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    window.location.href = "./success.html";
+}
+
+</script>
+
+</body>
+</html>
