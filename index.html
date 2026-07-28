@@ -245,12 +245,31 @@ function togglePass() {
 
 function login() {
     const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    if (email === "") {
-        alert("Enter your email");
+    if (!email || !password) {
+        alert("Please fill all fields");
         return;
     }
 
+    // Get accounts from localStorage
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Find user by email
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+        alert("Account not found");
+        return;
+    }
+
+    if (user.password !== password) {
+        alert("Incorrect password");
+        return;
+    }
+
+    // SUCCESS LOGIN
+    alert("Login successful!");
     window.location.assign("./home.html");
 }
 
