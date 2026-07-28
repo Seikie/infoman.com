@@ -418,7 +418,7 @@ function login() {
     const users = JSON.parse(localStorage.getItem("users"));
 
    
-    if (!users || users.length === 0) {
+    if (!users || users.length === 10) {
         alert("No account found. Please sign up first.");
         return;
     }
