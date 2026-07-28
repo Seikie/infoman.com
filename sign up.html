@@ -193,12 +193,11 @@ button:hover {
 <div class="dot"></div>
 
 <script>
-
 function signup() {
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const pass = document.getElementById("password").value;
-    const confirm = document.getElementById("confirm").value;
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const confirm = document.getElementById("confirm").value.trim();
 
     if (!name || !email || !pass || !confirm) {
         alert("Please fill all fields");
@@ -210,17 +209,26 @@ function signup() {
         return;
     }
 
-    // TEMP STORAGE (frontend only)
-    localStorage.setItem("userEmail", email);
-    localStorage.setItem("userPass", pass);
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // check if email already exists
+    const exists = users.find(u => u.email === email);
+    if (exists) {
+        alert("Email already registered");
+        return;
+    }
+
+    users.push({
+        name: name,
+        email: email,
+        password: pass
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
 
     alert("Account created!");
-
-    // redirect to login
-    window.location.href = "index.html";
+    window.location.href = "index.html"; // your login page
 }
-
 </script>
-
 </body>
 </html>
