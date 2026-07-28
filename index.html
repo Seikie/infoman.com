@@ -252,10 +252,14 @@ function login() {
         return;
     }
 
-    // Get accounts from localStorage
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const users = JSON.parse(localStorage.getItem("users"));
 
-    // Find user by email
+    // 🚫 If NO users exist → force signup first
+    if (!users || users.length === 0) {
+        alert("No account found. Please sign up first.");
+        return;
+    }
+
     const user = users.find(u => u.email === email);
 
     if (!user) {
@@ -268,9 +272,9 @@ function login() {
         return;
     }
 
-    // SUCCESS LOGIN
+    // ✅ Only reaches here if EVERYTHING is correct
     alert("Login successful!");
-    window.location.assign("./home.html");
+    window.location.href = "home.html";
 }
 
 </script>
