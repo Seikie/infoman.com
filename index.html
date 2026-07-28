@@ -348,57 +348,44 @@ button:hover {
 </div>
 <script>
 
-  function resetPassword() {
+function resetPassword(){
 
-    let email = document.getElementById("resetEmail").value.trim().toLowerCase();
-    let newPass = document.getElementById("newPassword").value;
-    let confirmPass = document.getElementById("confirmPassword").value;
+    let email = document.getElementById("resetEmail").value.trim();
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    let index = users.findIndex(
+        u => u.email.trim() === email
+    );
 
 
-    if(email === "" || newPass === "" || confirmPass === ""){
-        alert("Please fill all fields!");
+    if(index === -1){
+        alert("Email not found!");
+        console.log("Searching:", email);
+        console.log("Saved users:", users);
         return;
     }
 
 
-    if(newPass !== confirmPass){
+    let newPassword = document.getElementById("newPassword").value;
+    let confirmPassword = document.getElementById("confirmPassword").value;
+
+
+    if(newPassword !== confirmPassword){
         alert("Passwords do not match!");
         return;
     }
 
 
-    // Get users array
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    users[index].password = newPassword;
 
-
-    // Find account
-    let account = users.find(user => 
-        user.email.toLowerCase() === email
-    );
-
-
-    if(!account){
-        alert("Email not found!");
-        return;
-    }
-
-
-    // Change password
-    account.password = newPass;
-
-
-    // Save updated users
     localStorage.setItem("users", JSON.stringify(users));
 
 
-    // Update your separate login storage too
-    localStorage.setItem("userPass", newPass);
-
-
-    alert("Password successfully changed!");
-
+    alert("Password changed successfully!");
 
     closeModal();
+}
 
 
     document.getElementById("resetEmail").value = "";
