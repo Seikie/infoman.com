@@ -151,13 +151,28 @@ audio {
 
 </div>
 
-<script>
+<script type="module">
+
+/* ===== FIREBASE ===== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 /* ===== ELEMENTS ===== */
 const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
 
-/* ===== STATE ===== */
 let selectedFiles = [];
 
 /* ===== CLICK SELECT ===== */
@@ -194,7 +209,6 @@ function updateUI() {
         <input type="file" id="fileInput" accept="audio/*" multiple hidden>
     `;
 
-    // Re-bind input after replacing HTML
     const newInput = document.getElementById("fileInput");
     newInput.addEventListener("change", () => {
         selectedFiles = Array.from(newInput.files);
@@ -202,8 +216,8 @@ function updateUI() {
     });
 }
 
-/* ===== UPLOAD ===== */
-function uploadBeat() {
+/* ===== UPLOAD (FIREBASE VERSION) ===== */
+async function uploadBeat() {
     const title = document.getElementById("title").value;
     const price = document.getElementById("price").value;
 
@@ -212,51 +226,44 @@ function uploadBeat() {
         return;
     }
 
-    let beats = JSON.parse(localStorage.getItem("beats")) || [];
-    let processed = 0;
+    for (const file of selectedFiles) {
 
-    selectedFiles.forEach(file => {
-
-        // 🔥 FILE SIZE LIMIT (1.5MB)
-        if (file.size > 30.4 * 1024 * 1024) {
-            alert(file.name + " is too large! Max 2000MB only.");
-            return;
+        if (file.size > 30 * 1024 * 1024) {
+            alert(file.name + " is too large!");
+            continue;
         }
 
-        const reader = new FileReader();
+        try {
+            const storageRef = ref(storage, "beats/" + file.name);
 
-        reader.onload = function(e) {
-            beats.push({
+            // upload file
+            await uploadBytes(storageRef, file);
+
+            // get URL
+            const url = await getDownloadURL(storageRef);
+
+            // save to database
+            await addDoc(collection(db, "beats"), {
                 title: title,
                 price: price,
-                audio: e.target.result
+                audio: url,
+                createdAt: new Date()
             });
 
-            processed++;
+        } catch (err) {
+            console.error(err);
+            alert("Upload failed!");
+        }
+    }
 
-            if (processed === selectedFiles.length) {
-                try {
-                    localStorage.setItem("beats", JSON.stringify(beats));
-                } catch (err) {
-                    alert("Storage full! Delete some beats.");
-                    return;
-                }
-
-                loadBeats();
-                alert("Upload complete!");
-
-                resetForm();
-            }
-        };
-
-        reader.readAsDataURL(file);
-    });
+    alert("Upload complete!");
+    resetForm();
+    loadBeats();
 }
 
 /* ===== RESET ===== */
 function resetForm() {
     selectedFiles = [];
-    fileInput.value = "";
     document.getElementById("title").value = "";
     document.getElementById("price").value = "";
 
@@ -266,7 +273,6 @@ function resetForm() {
         <input type="file" id="fileInput" accept="audio/*" multiple hidden>
     `;
 
-    // Rebind again
     const newInput = document.getElementById("fileInput");
     newInput.addEventListener("change", () => {
         selectedFiles = Array.from(newInput.files);
@@ -274,40 +280,32 @@ function resetForm() {
     });
 }
 
-/* ===== LOAD ===== */
-function loadBeats() {
+/* ===== LOAD FROM FIREBASE ===== */
+async function loadBeats() {
     const grid = document.getElementById("grid");
     grid.innerHTML = "";
 
-    let beats = JSON.parse(localStorage.getItem("beats")) || [];
+    const querySnapshot = await getDocs(collection(db, "beats"));
 
-    beats.forEach((beat, index) => {
+    querySnapshot.forEach(doc => {
+        const beat = doc.data();
+
         const div = document.createElement("div");
         div.className = "beat";
 
         div.innerHTML = `
             <h3>${beat.title}</h3>
             <audio controls src="${beat.audio}"></audio>
-            <p>₱${beat.price}</p>
-            <button onclick="deleteBeat(${index})">Delete</button>
+            <p>$${beat.price}</p>
         `;
 
         grid.appendChild(div);
     });
 }
 
-/* ===== DELETE ===== */
-function deleteBeat(index) {
-    let beats = JSON.parse(localStorage.getItem("beats")) || [];
-    beats.splice(index, 1);
-    localStorage.setItem("beats", JSON.stringify(beats));
-    loadBeats();
-}
-
 /* ===== INIT ===== */
 loadBeats();
 
 </script>
-
 </body>
 </html>
