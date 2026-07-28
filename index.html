@@ -9,6 +9,89 @@
 
 <style>
 
+    /* ===== FORGOT PASSWORD MODAL POPUP ANIMATION ===== */
+
+.forgot-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.forgot-modal.active {
+    display: flex;
+    animation: fadeBackground 0.3s ease;
+}
+
+
+.forgot-box {
+    background: #111;
+    padding: 30px;
+    border-radius: 15px;
+    width: 350px;
+    text-align: center;
+
+    /* popup animation */
+    animation: popup 0.35s ease;
+}
+
+
+/* Popup effect */
+@keyframes popup {
+    from {
+        opacity: 0;
+        transform: scale(3) translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(5) translateY(0);
+    }
+}
+
+
+/* Background fade */
+@keyframes fadeBackground {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+/* ===== CURSOR POINTER ANIMATION ===== */
+
+.forgot-box button,
+.forgot-box a {
+    cursor: pointer;
+    transition: 
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.forgot-box button:hover,
+.forgot-box a:hover {
+
+    transform: scale(1.08);
+    box-shadow: 0 0 15px orange;
+}
+
+
+.forgot-box button:active,
+.forgot-box a:active {
+
+    transform: scale(0.92);
+}
+
 /* ===== RESET ===== */
 * {
     margin: 0;
@@ -59,31 +142,18 @@ body::after {
     width: 360px;
     padding: 35px;
     border-radius: 25px;
-
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(25px);
     border: 1px solid rgba(255,255,255,0.2);
-
     box-shadow: 0 0 50px rgba(0,0,0,0.6);
 }
 
 /* ===== TEXT ===== */
-.container h1 {
-    color: #fff;
-    font-weight: 600;
-}
-
-.container p {
-    color: #bbb;
-    font-size: 12px;
-    margin-bottom: 25px;
-}
+.container h1 { color: #fff; }
+.container p { color: #bbb; font-size: 12px; margin-bottom: 25px; }
 
 /* ===== INPUT ===== */
-.input-box {
-    position: relative;
-    margin-bottom: 18px;
-}
+.input-box { position: relative; margin-bottom: 18px; }
 
 .input-box input {
     width: 100%;
@@ -92,7 +162,6 @@ body::after {
     border: 1px solid rgba(255,255,255,0.3);
     background: transparent;
     color: #fff;
-    outline: none;
 }
 
 .input-box span {
@@ -100,7 +169,6 @@ body::after {
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #ccc;
     cursor: pointer;
 }
 
@@ -122,22 +190,15 @@ button {
     border: none;
     background: linear-gradient(90deg, #ff512f, #ff7b00);
     color: white;
-    font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
 }
-
 button:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px #ff512f;
 }
 
 /* ===== LINKS ===== */
-.links {
-    text-align: center;
-    margin-top: 15px;
-}
-
 .links a {
     color: #ccc;
     font-size: 12px;
@@ -145,8 +206,10 @@ button:hover {
     position: relative;
     transition: 0.3s;
 }
+.links { text-align: center; margin-top: 15px; }
+.links p { cursor: pointer; color: #ccc; }
 
-/* ===== SIGNUP HOVER ANIMATION ===== */
+/* ===== SIGNUP ===== */
 .signup {
     margin-top: 20px;
     text-align: center;
@@ -183,6 +246,9 @@ button:hover {
     transform: translateY(-2px);
 }
 
+.signup { margin-top: 20px; text-align: center; font-size: 12px; color: #bbb; }
+.signup a { color: white; }
+
 /* ===== DOT ===== */
 .dot {
     position: absolute;
@@ -195,6 +261,45 @@ button:hover {
     filter: blur(10px);
 }
 
+/* ===== MODAL ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal-content {
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+    width: 300px;
+    color: white;
+    text-align: center;
+    position: relative;
+}
+
+.modal-content input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -202,41 +307,95 @@ button:hover {
 
 <div class="container">
     <h1>Login</h1>
-    <p>WELCOME BACK PLEASE LOGIN TO YOUR ACCOUNT</p>
+    <p>WELCOME BACK PLEASE LOGIN</p>
 
-    <!-- EMAIL -->
     <div class="input-box">
-        <input type="email" id="email" placeholder="Email Address">
-        <span></span>
+        <input type="email" id="email" placeholder="Email">
     </div>
 
-    <!-- PASSWORD -->
     <div class="input-box">
         <input type="password" id="password" placeholder="Password">
         <span onclick="togglePass()">👁</span>
     </div>
 
-    <!-- REMEMBER -->
-    <div class="remember">
-        <input type="checkbox"> Remember Me
-    </div>
-
-    <!-- BUTTON -->
     <button onclick="login()">LOGIN</button>
 
     <div class="links">
-        <a href="#">Forgot Password</a>
+        <p onclick="openForgot()">Forgot Password</p>
     </div>
 
-    <!-- SIGNUP LINK -->
-    <div class="signup">
+     <div class="signup">
         Don’t have an account? <a href="sign up.html">Signup</a>
     </div>
 </div>
 
-<div class="dot"></div>
+<div id="forgotModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">✖</span>
 
+    <h3>Reset Password</h3>
+
+    <input id="resetEmail" type="email" placeholder="Email">
+    <input id="newPassword" type="password" placeholder="New Password">
+    <input id="confirmPassword" type="password" placeholder="Confirm Password">
+
+    <button onclick="resetPassword()">Confirm</button>
+  </div>
+</div>
 <script>
+
+    function resetPassword() {
+
+    let email = document.getElementById("resetEmail").value;
+    let newPass = document.getElementById("newPassword").value;
+    let confirmPass = document.getElementById("confirmPassword").value;
+
+
+    if(email === "" || newPass === "" || confirmPass === ""){
+        alert("Please fill all fields!");
+        return;
+    }
+
+
+    if(newPass !== confirmPass){
+        alert("Passwords do not match!");
+        return;
+    }
+
+
+    // Get saved account
+    let user = JSON.parse(localStorage.getItem("user"));
+
+
+    if(!user || user.email !== email){
+        alert("Email not found!");
+        return;
+    }
+
+
+    // Change password
+    user.password = newPass;
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+
+    alert("Password successfully changed!");
+
+
+    // Close modal
+    closeModal();
+
+
+    // Clear fields
+    document.getElementById("resetEmail").value = "";
+    document.getElementById("newPassword").value = "";
+    document.getElementById("confirmPassword").value = "";
+}
+
+
+function closeModal(){
+    document.getElementById("forgotModal").style.display = "none";
+}
 
 function togglePass() {
     const pass = document.getElementById("password");
@@ -244,37 +403,28 @@ function togglePass() {
 }
 
 function login() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (!email || !password) {
-        alert("Please fill all fields");
+    const email = document.getElementById("email").value;
+    if (!email) {
+        alert("Enter your email");
         return;
     }
-
-    const users = JSON.parse(localStorage.getItem("users"));
-
-    // 🚫 If NO users exist → force signup first
-    if (!users || users.length === 0) {
-        alert("No account found. Please sign up first.");
-        return;
-    }
-
-    const user = users.find(u => u.email === email);
-
-    if (!user) {
-        alert("Account not found");
-        return;
-    }
-
-    if (user.password !== password) {
-        alert("Incorrect password");
-        return;
-    }
-
-    // ✅ Only reaches here if EVERYTHING is correct
-    alert("Login successful!");
     window.location.href = "home.html";
+}
+
+function openForgot() {
+    document.getElementById("forgotModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("forgotModal").style.display = "none";
+}
+
+/* click outside to close */
+window.onclick = function(e) {
+    let modal = document.getElementById("forgotModal");
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
 }
 
 </script>
