@@ -69,7 +69,7 @@ body::after {
 .container p { color: #bbb; font-size: 12px; margin-bottom: 25px; }
 
 /* INPUT */
-.input-box { position: relative; margin-bottom: 18px; }
+.input-box { margin-bottom: 18px; }
 
 .input-box input {
     width: 100%;
@@ -97,14 +97,15 @@ button:hover {
 }
 
 /* LINKS */
-    .links a {
+.links {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.links p {
+    cursor: pointer;
     color: #ccc;
-    font-size: 12px;
-    text-decoration: none;
-    position: relative;
-    transition: 0.3s;
-.links { text-align: center; margin-top: 15px; }
-.links p { cursor: pointer; color: #ccc; }
+}
 
 /* SIGNUP */
 .signup {
@@ -120,44 +121,16 @@ button:hover {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+
     justify-content: center;
     align-items: center;
+
+    z-index: 999;
 }
 
-.modal-content {
-    background: #111;
-    padding: 25px;
-    border-radius: 15px;
-    width: 300px;
-    color: white;
-    text-align: center;
-    animation: popup 0.3s ease;
-}
-
-/* FIXED ANIMATION */
-        /* POPUP ANIMATION */
-@keyframes popup {
-    from {
-        opacity: 0;
-        transform: scale(0.7) translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-/* MODAL BACKGROUND */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
+.modal.active {
+    display: flex;
 }
 
 .modal-content {
@@ -168,6 +141,7 @@ button:hover {
     color: white;
     text-align: center;
     position: relative;
+    animation: popup 0.3s ease;
 }
 
 .modal-content input {
@@ -185,6 +159,17 @@ button:hover {
     cursor: pointer;
 }
 
+/* ANIMATION */
+@keyframes popup {
+    from {
+        opacity: 0;
+        transform: scale(0.7) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
 
 </style>
 </head>
@@ -233,19 +218,19 @@ button:hover {
 
 /* OPEN MODAL */
 function openForgot() {
-    document.getElementById("forgotModal").style.display = "flex";
+    document.getElementById("forgotModal").classList.add("active");
 }
 
 /* CLOSE MODAL */
 function closeModal() {
-    document.getElementById("forgotModal").style.display = "none";
+    document.getElementById("forgotModal").classList.remove("active");
 }
 
 /* CLICK OUTSIDE CLOSE */
 window.onclick = function(e) {
     let modal = document.getElementById("forgotModal");
     if (e.target === modal) {
-        modal.style.display = "none";
+        modal.classList.remove("active");
     }
 }
 
