@@ -437,14 +437,20 @@ function login() {
 }
 
 function openForgot() {
-  document.getElementById("forgotModal").style.display = "flex";
+    document.getElementById("forgotModal").style.display = "flex";
 }
 
-// CLOSE MODAL
 function closeModal() {
-  document.getElementById("forgotModal").style.display = "none";
+    document.getElementById("forgotModal").style.display = "none";
 }
 
+/* click outside to close */
+window.onclick = function(e) {
+    let modal = document.getElementById("forgotModal");
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+}
 // RESET PASSWORD
 function resetPassword() {
   let email = document.getElementById("resetEmail").value;
