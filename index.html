@@ -380,6 +380,7 @@ function login() {
     }
 
     // ✅ Only reaches here if EVERYTHING is correct
+    if (user || password) {
     alert("Login successful!");
     window.location.href = "home.html";
 }
