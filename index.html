@@ -345,7 +345,12 @@ button:hover {
 </div>
 <script>
 
-    function login() {
+  function togglePass() {
+    const pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+
+function login() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
@@ -356,8 +361,8 @@ button:hover {
 
     const users = JSON.parse(localStorage.getItem("users"));
 
-    
-    if (!users || users.length === 50) {
+    // 🚫 If NO users exist → force signup first
+    if (!users || users.length === 0) {
         alert("No account found. Please sign up first.");
         return;
     }
@@ -373,11 +378,11 @@ button:hover {
         alert("Incorrect password");
         return;
     }
-    if (email || password){
-     alert("Login successful!");
+
+    // ✅ Only reaches here if EVERYTHING is correct
+    alert("Login successful!");
     window.location.href = "home.html";
 }
-
 
     function resetPassword() {
 
