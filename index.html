@@ -135,6 +135,46 @@ button:hover {
 }
 
 /* FIXED ANIMATION */
+/* MODAL BACKGROUND */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999; /* VERY IMPORTANT */
+}
+
+/* MODAL BOX */
+.modal-content {
+    position: relative; /* FIX FOR CLOSE BUTTON */
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+    width: 320px;
+    color: white;
+    text-align: center;
+
+    z-index: 10000;
+
+    animation: popup 0.3s ease;
+}
+
+/* CLOSE BUTTON */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* POPUP ANIMATION */
 @keyframes popup {
     from {
         opacity: 0;
@@ -145,60 +185,6 @@ button:hover {
         transform: scale(1) translateY(0);
     }
 }
-
-.modal-content input {
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    cursor: pointer;
-}
-    signup {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 12px;
-    color: #bbb;
-}
-
-.signup a {
-    color: white;
-    text-decoration: none;
-    position: relative;
-    transition: 0.3s;
-}
-
-/* underline animation */
-.signup a::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    left: 0;
-    bottom: -3px;
-    background: linear-gradient(90deg, #ff512f, #ff7b00);
-    transition: 0.3s;
-}
-
-.signup a:hover::after {
-    width: 100%;
-}
-
-/* glow + lift */
-.signup a:hover {
-    color: #ff7b00;
-    transform: translateY(-2px);
-}
-
-.signup { margin-top: 20px; text-align: center; font-size: 12px; color: #bbb; }
-.signup a { color: white; }
-
 
 </style>
 </head>
