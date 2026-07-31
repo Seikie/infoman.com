@@ -9,90 +9,7 @@
 
 <style>
 
-    /* ===== FORGOT PASSWORD MODAL POPUP ANIMATION ===== */
-
-.forgot-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(5px);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.forgot-modal.active {
-    display: flex;
-    animation: fadeBackground 0.3s ease;
-}
-
-
-.forgot-box {
-    background: #111;
-    padding: 30px;
-    border-radius: 15px;
-    width: 350px;
-    text-align: center;
-
-    /* popup animation */
-    animation: popup 0.35s ease;
-}
-
-
-/* Popup effect */
-@keyframes popup {
-    from {
-        opacity: 0;
-        transform: scale(3) translateY(-30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(5) translateY(0);
-    }
-}
-
-
-/* Background fade */
-@keyframes fadeBackground {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-
-
-/* ===== CURSOR POINTER ANIMATION ===== */
-
-.forgot-box button,
-.forgot-box a {
-    cursor: pointer;
-    transition: 
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-.forgot-box button:hover,
-.forgot-box a:hover {
-
-    transform: scale(1.08);
-    box-shadow: 0 0 15px orange;
-}
-
-
-.forgot-box button:active,
-.forgot-box a:active {
-
-    transform: scale(0.92);
-}
-
-/* ===== RESET ===== */
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -100,7 +17,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* ===== BODY ===== */
+/* BODY */
 body {
     height: 100vh;
     display: flex;
@@ -110,7 +27,7 @@ body {
     overflow: hidden;
 }
 
-/* ===== BLOBS ===== */
+/* BLOBS */
 body::before, body::after {
     content: "";
     position: absolute;
@@ -135,7 +52,7 @@ body::after {
     left: -120px;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 .container {
     position: relative;
     z-index: 2;
@@ -145,44 +62,25 @@ body::after {
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(25px);
     border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 0 50px rgba(0,0,0,0.6);
 }
 
-/* ===== TEXT ===== */
+/* TEXT */
 .container h1 { color: #fff; }
 .container p { color: #bbb; font-size: 12px; margin-bottom: 25px; }
 
-/* ===== INPUT ===== */
+/* INPUT */
 .input-box { position: relative; margin-bottom: 18px; }
 
 .input-box input {
     width: 100%;
-    padding: 12px 40px 12px 15px;
+    padding: 12px;
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.3);
     background: transparent;
     color: #fff;
 }
 
-.input-box span {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-/* ===== REMEMBER ===== */
-.remember {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #ccc;
-    margin-bottom: 20px;
-}
-
-/* ===== BUTTON ===== */
+/* BUTTON */
 button {
     width: 100%;
     padding: 12px;
@@ -191,25 +89,16 @@ button {
     background: linear-gradient(90deg, #ff512f, #ff7b00);
     color: white;
     cursor: pointer;
-    transition: 0.3s;
 }
 button:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 20px #ff512f;
 }
 
-/* ===== LINKS ===== */
-.links a {
-    color: #ccc;
-    font-size: 12px;
-    text-decoration: none;
-    position: relative;
-    transition: 0.3s;
-}
+/* LINKS */
 .links { text-align: center; margin-top: 15px; }
 .links p { cursor: pointer; color: #ccc; }
 
-/* ===== SIGNUP ===== */
+/* SIGNUP */
 .signup {
     margin-top: 20px;
     text-align: center;
@@ -217,62 +106,14 @@ button:hover {
     color: #bbb;
 }
 
-.signup a {
-    color: white;
-    text-decoration: none;
-    position: relative;
-    transition: 0.3s;
-}
-
-/* underline animation */
-.signup a::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    left: 0;
-    bottom: -3px;
-    background: linear-gradient(90deg, #ff512f, #ff7b00);
-    transition: 0.3s;
-}
-
-.signup a:hover::after {
-    width: 100%;
-}
-
-/* glow + lift */
-.signup a:hover {
-    color: #ff7b00;
-    transform: translateY(-2px);
-}
-
-.signup { margin-top: 20px; text-align: center; font-size: 12px; color: #bbb; }
-.signup a { color: white; }
-
-/* ===== DOT ===== */
-.dot {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, #ff7b00, transparent);
-    border-radius: 50%;
-    bottom: 60px;
-    left: 60px;
-    filter: blur(10px);
-}
-
-/* ===== MODAL ===== */
+/* MODAL */
 .modal {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;
-    z-index: 10;
 }
 
 .modal-content {
@@ -282,7 +123,19 @@ button:hover {
     width: 300px;
     color: white;
     text-align: center;
-    position: relative;
+    animation: popup 0.3s ease;
+}
+
+/* FIXED ANIMATION */
+@keyframes popup {
+    from {
+        opacity: 0;
+        transform: scale(0.7) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .modal-content input {
@@ -315,11 +168,6 @@ button:hover {
 
     <div class="input-box">
         <input type="password" id="password" placeholder="Password">
-        <span onclick="togglePass()">👁</span>
-    </div>
-    <!-- REMEMBER -->
-    <div class="remember">
-        <input type="checkbox"> Remember Me
     </div>
 
     <button onclick="login()">LOGIN</button>
@@ -328,11 +176,12 @@ button:hover {
         <p onclick="openForgot()">Forgot Password</p>
     </div>
 
-     <div class="signup">
+    <div class="signup">
         Don’t have an account? <a href="sign up.html">Signup</a>
     </div>
 </div>
 
+<!-- MODAL -->
 <div id="forgotModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">✖</span>
@@ -346,63 +195,28 @@ button:hover {
     <button onclick="resetPassword()">Confirm</button>
   </div>
 </div>
+
 <script>
 
-function resetPassword(){
-
-    let email = document.getElementById("resetEmail").value.trim();
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    let index = users.findIndex(
-        u => u.email.trim() === email
-    );
-
-
-    if(index === -1){
-        alert("Email not found!");
-        console.log("Searching:", email);
-        console.log("Saved users:", users);
-        return;
-    }
-
-
-    let newPassword = document.getElementById("newPassword").value;
-    let confirmPassword = document.getElementById("confirmPassword").value;
-
-
-    if(newPassword !== confirmPassword){
-        alert("Passwords do not match!");
-        return;
-    }
-
-
-    users[index].password = newPassword;
-
-    localStorage.setItem("users", JSON.stringify(users));
-
-
-    alert("Password changed successfully!");
-
-    closeModal();
+/* OPEN MODAL */
+function openForgot() {
+    document.getElementById("forgotModal").style.display = "flex";
 }
 
-
-    document.getElementById("resetEmail").value = "";
-    document.getElementById("newPassword").value = "";
-    document.getElementById("confirmPassword").value = "";
-}
-
-
-function closeModal(){
+/* CLOSE MODAL */
+function closeModal() {
     document.getElementById("forgotModal").style.display = "none";
 }
 
-function togglePass() {
-    const pass = document.getElementById("password");
-    pass.type = pass.type === "password" ? "text" : "password";
+/* CLICK OUTSIDE CLOSE */
+window.onclick = function(e) {
+    let modal = document.getElementById("forgotModal");
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
 }
 
+/* LOGIN */
 function login() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -412,15 +226,14 @@ function login() {
         return;
     }
 
-    const users = JSON.parse(localStorage.getItem("users"));
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
-   
-    if (!users || users.length === 10) {
+    if (users.length === 0) {
         alert("No account found. Please sign up first.");
         return;
     }
 
-    const user = users.find(u => u.email === email);
+    const user = users.find(u => u.email.trim() === email);
 
     if (!user) {
         alert("Account not found");
@@ -432,25 +245,40 @@ function login() {
         return;
     }
 
-    // ✅ Only reaches here if EVERYTHING is correct
     alert("Login successful!");
     window.location.href = "home.html";
 }
 
-function openForgot() {
-    document.getElementById("forgotModal").style.display = "flex";
-}
+/* RESET PASSWORD */
+function resetPassword(){
+    let email = document.getElementById("resetEmail").value.trim();
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-function closeModal() {
-    document.getElementById("forgotModal").style.display = "none";
-}
+    let index = users.findIndex(u => u.email.trim() === email);
 
-/* click outside to close */
-window.onclick = function(e) {
-    let modal = document.getElementById("forgotModal");
-    if (e.target === modal) {
-        modal.style.display = "none";
+    if(index === -1){
+        alert("Email not found!");
+        return;
     }
+
+    let newPassword = document.getElementById("newPassword").value;
+    let confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(newPassword !== confirmPassword){
+        alert("Passwords do not match!");
+        return;
+    }
+
+    users[index].password = newPassword;
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Password changed successfully!");
+
+    document.getElementById("resetEmail").value = "";
+    document.getElementById("newPassword").value = "";
+    document.getElementById("confirmPassword").value = "";
+
+    closeModal();
 }
 
 </script>
